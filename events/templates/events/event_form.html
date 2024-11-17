@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Event Form{% endblock %}
+
+{% block content %}
+    {% if form.errors %}
+<div class="alert alert-danger">
+    <ul>
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<div class="container">
+    <h1 class="my-4">{{ form.instance.pk|yesno:"Update Event,Create Event" }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_name" class="form-label">Event Name</label>
+            {{ form.name }}
+        </div>
+        <div class="mb-3">
+            <label for="id_description" class="form-label">Description</label>
+            {{ form.description }}
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="id_start_date" class="form-label">Start Date</label>
+                    {{ form.start_date }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="id_end_date" class="form-label">End Date</label>
+                    {{ form.end_date }}
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="id_venue" class="form-label">Venue</label>
+            {{ form.venue }}
+        </div>
+        <div class="mb-3">
+            <label for="id_category" class="form-label">Category</label>
+            {{ form.category }}
+        </div>
+        <div class="mb-3">
+            <label for="id_ticket_types" class="form-label">Ticket Types</label>
+            <select id="id_ticket_types" class="form-select" multiple>
+                <option value="general">General</option>
+                <option value="vip">VIP</option>
+                <option value="early_bird">Early Bird</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="{% url 'events:list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

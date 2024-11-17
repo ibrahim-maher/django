@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="mb-4 text-center">Admin Dashboard</h1>
+
+        <!-- Overview Cards -->
+        <div class="row g-4">
+            <!-- Total Events -->
+            <div class="col-md-3">
+                <div class="card shadow bg-info text-white">
+                    <div class="card-body text-center">
+                        <h5>Total Events</h5>
+                        <p class="display-6">{{ total_events }}</p>
+                    </div>
+                    <a href="{% url 'events:list' %}" class="card-footer text-white text-center text-decoration-none">
+                        Manage Events
+                    </a>
+                </div>
+            </div>
+
+            <!-- Total Venues -->
+            <div class="col-md-3">
+                <div class="card shadow bg-warning text-dark">
+                    <div class="card-body text-center">
+                        <h5>Total Venues</h5>
+                        <p class="display-6">{{ venues_count }}</p>
+                    </div>
+                    <a href="{% url 'events:venue_list' %}"
+                       class="card-footer text-dark text-center text-decoration-none">
+                        Manage Venues
+                    </a>
+                </div>
+            </div>
+
+            <!-- Total Categories -->
+            <div class="col-md-3">
+                <div class="card shadow bg-success text-white">
+                    <div class="card-body text-center">
+                        <h5>Total Categories</h5>
+                        <p class="display-6">{{ categories_count }}</p>
+                    </div>
+                    <a href="{% url 'events:category_list' %}"
+                       class="card-footer text-white text-center text-decoration-none">
+                        Manage Categories
+                    </a>
+                </div>
+            </div>
+
+            <!-- Reports -->
+            <div class="col-md-3">
+                <div class="card shadow bg-danger text-white">
+                    <div class="card-body text-center">
+                        <h5>Reports</h5>
+                        <p class="display-6">View</p>
+                    </div>
+                    <a href="{% url 'management:reports' %}"
+                       class="card-footer text-white text-center text-decoration-none">
+                        View Reports
+                    </a>
+                </div>
+            </div>
+
+            <!-- Total Registrations -->
+            <div class="col-md-3">
+                <div class="card shadow bg-primary text-white">
+                    <div class="card-body text-center">
+                        <h5>Total Registrations</h5>
+                        <p class="display-6">{{ registrations_count }}</p>
+                    </div>
+                    <a href="{% url 'registration:admin_list_registrations' %}"
+                       class="card-footer text-white text-center text-decoration-none">
+                        Manage Registrations
+                    </a>
+                </div>
+            </div>
+
+            <!-- Total Tickets -->
+            <div class="col-md-3">
+                <div class="card shadow bg-dark text-white">
+                    <div class="card-body text-center">
+                        <h5>Total Tickets</h5>
+                        <p class="display-6">{{ tickets_count }}</p>
+                    </div>
+                    <a href="{% url 'registration:admin_list_tickets' %}"
+                       class="card-footer text-white text-center text-decoration-none">
+                        Manage Tickets
+                    </a>
+                </div>
+            </div>
+                <!-- Total Visitors -->
+                <div class="col-md-3">
+                    <div class="card shadow bg-primary text-white">
+                        <div class="card-body text-center">
+                            <h5>Total Visitors</h5>
+                            <p class="display-6">{{ visitors_count }}</p>
+                        </div>
+                        <a href="{% url 'users:user_list_by_role' 'VISITOR' %}"
+                           class="card-footer text-white text-center text-decoration-none">
+                            View Visitors
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Total Event Managers -->
+                <div class="col-md-3">
+                    <div class="card shadow bg-success text-white">
+                        <div class="card-body text-center">
+                            <h5>Total Event Managers</h5>
+                            <p class="display-6">{{ event_managers_count }}</p>
+                        </div>
+                        <a href="{% url 'users:user_list_by_role' 'EVENT_MANAGER' %}"
+                           class="card-footer text-white text-center text-decoration-none">
+                            View Event Managers
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Total Ushers -->
+                <div class="col-md-3">
+                    <div class="card shadow bg-warning text-white">
+                        <div class="card-body text-center">
+                            <h5>Total Ushers</h5>
+                            <p class="display-6">{{ ushers_count }}</p>
+                        </div>
+                        <a href="{% url 'users:user_list_by_role' 'USHER' %}"
+                           class="card-footer text-white text-center text-decoration-none">
+                            View Ushers
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Total Admins (Optional if you want to include admins) -->
+
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row mt-5">
+            <h2 class="text-center mb-4">Analytics</h2>
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        Event Registrations
+                    </div>
+                    <div class="card-body">
+                        <canvas id="eventRegistrationsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-secondary text-white">
+                        Category Popularity
+                    </div>
+                    <div class="card-body">
+                        <canvas id="categoryPopularityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Links Section -->
+        <div class="row mt-5">
+            <h2 class="text-center mb-4">Quick Links</h2>
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-body text-center">
+                        <a href="{% url 'events:create' %}" class="btn btn-primary btn-lg">
+                            <i class="la la-plus"></i> Create New Event
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-body text-center">
+                        <i class="la la-id-badge"></i> Badge Management
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-body text-center">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Event Registrations Chart
+        var ctx1 = document.getElementById('eventRegistrationsChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['Event 1', 'Event 2', 'Event 3'], // Replace with dynamic data
+                datasets: [{
+                    label: 'Registrations',
+                    data: [120, 90, 75], // Replace with dynamic data
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // Category Popularity Chart
+        var ctx2 = document.getElementById('categoryPopularityChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: ['Category 1', 'Category 2', 'Category 3'], // Replace with dynamic data
+                datasets: [{
+                    data: [45, 30, 25], // Replace with dynamic data
+                    backgroundColor: ['#007bff', '#28a745', '#ffc107']
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
+{% endblock %}

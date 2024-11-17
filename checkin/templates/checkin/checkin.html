@@ -1,0 +1,15 @@
+<!-- checkin/templates/checkin/checkin.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check-In</title>
+</head>
+<body>
+    <h1>Check-In</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Check-In</button>
+    </form>
+</body>
+</html>

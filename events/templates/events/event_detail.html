@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Event Detail{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h1 class="mb-0">{{ event.name }}</h1>
+        </div>
+        <div class="card-body">
+            <p><strong>Description:</strong> {{ event.description }}</p>
+            <p><strong>Start Date:</strong> {{ event.start_date }}</p>
+            <p><strong>End Date:</strong> {{ event.end_date }}</p>
+            <p><strong>Venue:</strong> {{ event.venue.name }}</p>
+            <p><strong>Category:</strong> {{ event.category.name }}</p>
+            <div id="countdown" class="mt-4"></div>
+            <div class="mt-4">
+                <a href="#" class="btn btn-primary">Register Now</a>
+                <a href="#" class="btn btn-secondary">Add to Calendar</a>
+            </div>
+
+            {% if user.is_admin or user.is_event_manager %}
+            <div class="mt-4">
+              <a href="{% url 'registration:admin_manage_registration_fields' event.id %}" class="btn btn-warning">
+    Manage Registration Fields
+</a>
+
+            </div>
+            {% endif %}
+        </div>
+        <div class="card-footer text-end">
+            <a href="{% url 'events:list' %}" class="btn btn-secondary">Back to Events</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

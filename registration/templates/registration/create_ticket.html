@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Create Ticket{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Create a Ticket</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Dropdown for selecting the event -->
+        <div class="mb-3">
+            <label for="event" class="form-label">Select Event:</label>
+            <select name="event" id="event" class="form-select">
+                {% for event in events %}
+                    <option value="{{ event.id }}">{{ event.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Input fields for ticket details -->
+        <div class="mb-3">
+            <label for="id_name" class="form-label">Ticket Name:</label>
+            {{ form.name }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_price" class="form-label">Price:</label>
+            {{ form.price }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_capacity" class="form-label">Capacity:</label>
+            {{ form.capacity }}
+        </div>
+
+        <button type="submit" class="btn btn-success">Create Ticket</button>
+    </form>
+</div>
+{% endblock %}

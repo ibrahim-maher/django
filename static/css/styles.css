@@ -1,0 +1,35 @@
+/* Target LineAwesome icons directly with highest specificity */
+.pagination .page-item .first-page-arrow .la-angle-double-left {
+    color: green !important;
+}
+
+.pagination .page-item .prev-page-arrow .la-angle-left {
+    color: blue !important;
+}
+
+.pagination .page-item .next-page-arrow .la-angle-right {
+    color: orange !important;
+}
+
+.pagination .page-item .last-page-arrow .la-angle-double-right {
+    color: red !important;
+}
+
+/* Enhanced hover effects */
+.pagination .page-link {
+    transition: all 0.2s ease-in-out;
+}
+
+.pagination .page-link:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Active page styling */
+.pagination .page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}

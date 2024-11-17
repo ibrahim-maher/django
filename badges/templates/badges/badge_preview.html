@@ -1,0 +1,17 @@
+<!-- badges/templates/badges/badge_preview.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Badge Preview</title>
+</head>
+<body>
+    <h1>Badge Preview for {{ registration.user.username }}</h1>
+    <ul>
+        {% for template in templates %}
+            <li>
+                <a href="{% url 'badge_print' registration.id template.id %}">{{ template.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

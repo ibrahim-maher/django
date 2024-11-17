@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Manage Registration Fields for {{ event.name }}</h1>
+
+<form method="post" class="mb-4"> <!-- Added 'mb-4' to create space -->
+    {% csrf_token %}
+    <div id="dynamic-form">
+        {{ form.as_p }}
+        <div id="options-field" style="display: none;">
+            <label for="id_options">Options</label>
+            <textarea name="options" id="id_options" class="form-control">{{ form.options.value }}</textarea>
+            <small class="form-text text-muted">Enter comma-separated options for dropdown.</small>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3"> <!-- Added 'mt-3' for spacing -->
+        Add Field
+    </button>
+</form>
+
+<h2>Existing Registration Fields</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Required</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for field in fields %}
+        <tr>
+            <td>{{ field.field_name }}</td>
+            <td>{{ field.get_field_type_display }}</td>
+            <td>{{ field.is_required|yesno:"Yes,No" }}</td>
+            <td>
+                <form method="post" action="{% url 'registration:delete_registration_field' event.id field.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No registration fields found for this event.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const fieldTypeSelect = document.getElementById("id_field_type");
+        const optionsField = document.getElementById("options-field");
+
+        function toggleOptionsField() {
+            if (fieldTypeSelect.value === "dropdown") {
+                optionsField.style.display = "block";
+            } else {
+                optionsField.style.display = "none";
+            }
+        }
+
+        fieldTypeSelect.addEventListener("change", toggleOptionsField);
+
+        // Initial check on page load
+        toggleOptionsField();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,13 @@
+<h1>Event Manager: Manage Registration Fields for {{ event.name }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Registration Field</button>
+</form>
+
+<h2>Existing Fields</h2>
+<ul>
+    {% for field in fields %}
+        <li>{{ field.field_name }} (Type: {{ field.field_type }})</li>
+    {% endfor %}
+</ul>

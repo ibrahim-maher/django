@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Event Management System{% endblock %}
+
+{% block content %}
+    <h1>Welcome to the Event Management System</h1>
+    <p>Organize, manage, and attend events seamlessly.</p>
+    {% if user.is_authenticated %}
+        <p>Welcome back, {{ user.username }}!</p>
+    {% else %}
+        <p><a href="{% url 'users:login' %}">Log in</a> or <a href="{% url 'users:register' %}">Register</a> to get
+            started.</p>
+    {% endif %}
+{% endblock %}

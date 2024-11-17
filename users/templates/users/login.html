@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Sign In to Your Account</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form action="{% url 'users:login' %}" method="post" class="p-4 shadow rounded bg-light">
+                {% csrf_token %}
+
+                <!-- Display non-field errors (e.g., incorrect credentials) -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger text-center">
+                        {{ form.non_field_errors|join:", " }}
+                    </div>
+                {% endif %}
+
+                <!-- Username Field with Validation -->
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    {{ form.username }}
+
+                    <!-- Display field-specific error messages for username -->
+                    {% if form.username.errors %}
+                        <div class="text-danger">
+                            {{ form.username.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Password Field with Validation -->
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    {{ form.password }}
+
+                    <!-- Display field-specific error messages for password -->
+                    {% if form.password.errors %}
+                        <div class="text-danger">
+                            {{ form.password.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+
+            <!-- Register Link -->
+            <div class="text-center mt-3">
+                <span>Don't have an account?</span>
+                <a href="{% url 'users:register' %}" class="btn btn-link">Register Here</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

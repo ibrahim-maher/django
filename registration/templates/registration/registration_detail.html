@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Registration Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Registration Details</h1>
+    <dl class="row">
+        <dt class="col-sm-3">Event</dt>
+        <dd class="col-sm-9">{{ registration.event.name }}</dd>
+
+        <dt class="col-sm-3">User</dt>
+        <dd class="col-sm-9">{{ registration.user.username }}</dd>
+
+        <dt class="col-sm-3">Ticket Type</dt>
+        <dd class="col-sm-9">{{ registration.ticket_type.name }}</dd>
+
+        <dt class="col-sm-3">Registered At</dt>
+        <dd class="col-sm-9">{{ registration.registered_at }}</dd>
+    </dl>
+
+    <h2>Additional Registration Information</h2>
+    <ul>
+        {% for key, value in registration_data.items %}
+            <li><strong>{{ key }}:</strong> {{ value }}</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'registration:admin_list_registrations' %}" class="btn btn-primary">Back to List</a>
+</div>
+{% endblock %}

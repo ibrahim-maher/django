@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}Register for Event{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Register for an Event</h1>
+
+    <!-- Display Errors -->
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" id="registration-form">
+        {% csrf_token %}
+
+        <!-- Event Selection -->
+        <fieldset>
+            <legend>Select an Event</legend>
+            <div class="form-group">
+                <label for="event" class="form-label">Event:</label>
+                <select name="event" id="event" class="form-control" required>
+                    <option value="" selected disabled>Select an Event</option>
+                    {% for event in events %}
+                        <option value="{{ event.id }}">{{ event.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </fieldset>
+
+        <!-- Dynamic Registration Fields -->
+        <fieldset id="dynamic-fields">
+            <legend>Registration Information</legend>
+            <!-- Dynamic fields will be injected here -->
+        </fieldset>
+
+        <!-- Ticket Type Selection -->
+        <fieldset id="ticket-selection">
+            <legend>Choose a Ticket Type</legend>
+            <div id="ticket-types-container">
+                <!-- Dynamic ticket types will be injected here -->
+            </div>
+        </fieldset>
+
+        <button type="submit" class="btn btn-success">Submit Registration</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const eventSelect = document.getElementById("event");
+        const dynamicFieldsContainer = document.getElementById("dynamic-fields");
+        const ticketTypesContainer = document.getElementById("ticket-types-container");
+
+        // Fetch registration fields and ticket types when an event is selected
+        eventSelect.addEventListener("change", function () {
+            const eventId = this.value;
+
+            if (eventId) {
+                // Fetch dynamic registration fields
+                fetch(`{% url 'registration:fetch_registration_fields' event_id=0 %}`.replace('0', eventId))
+                    .then(response => {
+                        if (!response.ok) throw new Error("Network response was not ok");
+                        return response.json();
+                    })
+                    .then(fields => {
+                        dynamicFieldsContainer.innerHTML = ""; // Clear previous fields
+                        fields.forEach(field => {
+                            const div = document.createElement("div");
+                            div.className = "form-group";
+
+                            const label = document.createElement("label");
+                            label.textContent = field.field_name;
+
+                            let input;
+                            switch (field.field_type) {
+                                case "text":
+                                    input = document.createElement("input");
+                                    input.type = "text";
+                                    break;
+                                case "email":
+                                    input = document.createElement("input");
+                                    input.type = "email";
+                                    break;
+                                case "number":
+                                    input = document.createElement("input");
+                                    input.type = "number";
+                                    break;
+                                case "checkbox":
+                                    input = document.createElement("input");
+                                    input.type = "checkbox";
+                                    break;
+                                case "dropdown":
+                                    input = document.createElement("select");
+                                    input.className = "form-control";
+                                    field.options.split(",").forEach(option => {
+                                        const opt = document.createElement("option");
+                                        opt.value = option.trim();
+                                        opt.textContent = option.trim();
+                                        input.appendChild(opt);
+                                    });
+                                    break;
+                                default:
+                                    input = document.createElement("input");
+                                    input.type = "text";
+                            }
+
+                            input.name = field.field_name;
+                            input.className = "form-control";
+
+                            if (field.is_required) {
+                                input.required = true;
+                            }
+
+                            div.appendChild(label);
+                            div.appendChild(input);
+                            dynamicFieldsContainer.appendChild(div);
+                        });
+                    })
+                    .catch(error => console.error("Error fetching registration fields:", error));
+
+                // Fetch ticket types
+                fetch(`{% url 'registration:fetch_ticket_types' event_id=0 %}`.replace('0', eventId))
+                    .then(response => {
+                        if (!response.ok) throw new Error("Network response was not ok");
+                        return response.json();
+                    })
+                    .then(ticketTypes => {
+                        ticketTypesContainer.innerHTML = ""; // Clear previous ticket types
+                        ticketTypes.forEach(ticketType => {
+                            const div = document.createElement("div");
+                            div.className = "form-check";
+
+                            const input = document.createElement("input");
+                            input.type = "radio";
+                            input.name = "ticket_type";
+                            input.id = `ticket-${ticketType.id}`;
+                            input.value = ticketType.id;
+                            input.className = "form-check-input";
+                            input.required = true;
+
+                            const label = document.createElement("label");
+                            label.htmlFor = `ticket-${ticketType.id}`;
+                            label.className = "form-check-label";
+                            label.textContent = `${ticketType.name} - $${ticketType.price}`;
+
+                            div.appendChild(input);
+                            div.appendChild(label);
+                            ticketTypesContainer.appendChild(div);
+                        });
+                    })
+                    .catch(error => console.error("Error fetching ticket types:", error));
+            }
+        });
+    });
+</script>
+{% endblock %}

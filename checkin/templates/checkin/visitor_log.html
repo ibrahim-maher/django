@@ -1,0 +1,15 @@
+<!-- checkin/templates/checkin/visitor_log.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Visitor Log</title>
+</head>
+<body>
+    <h1>Visitor Log</h1>
+    <ul>
+        {% for log in logs %}
+            <li>{{ log.registration.user.username }} - {{ log.action }} at {{ log.log_time }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

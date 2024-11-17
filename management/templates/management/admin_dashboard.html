@@ -1,0 +1,25 @@
+<!-- management/templates/management/admin_dashboard.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+    <p>Total Users: {{ total_users }}</p>
+    <p>Total Events: {{ total_events }}</p>
+    <p>Total Registrations: {{ total_registrations }}</p>
+    <h2>Recent Events</h2>
+    <ul>
+        {% for event in recent_events %}
+            <li>{{ event.name }} - {{ event.start_date }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Recent Users</h2>
+    <ul>
+        {% for user in recent_users %}
+            <li>{{ user.username }} - {{ user.date_joined }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

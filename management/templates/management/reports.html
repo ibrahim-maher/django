@@ -1,0 +1,15 @@
+<!-- management/templates/management/reports.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reports</title>
+</head>
+<body>
+    <h1>Reports</h1>
+    <ul>
+        {% for report in reports %}
+            <li>{{ report.name }}: {{ report.data }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

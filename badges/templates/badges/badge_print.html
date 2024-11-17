@@ -1,0 +1,13 @@
+<!-- badges/templates/badges/badge_print.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Print Badge</title>
+</head>
+<body>
+    <h1>Print Badge for {{ badge_content.registration.user.username }}</h1>
+    <p>Template: {{ badge_content.template.name }}</p>
+    <p>Content: {{ badge_content.content }}</p>
+    <button onclick="window.print()">Print</button>
+</body>
+</html>
